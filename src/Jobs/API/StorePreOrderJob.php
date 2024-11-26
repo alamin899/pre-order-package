@@ -2,19 +2,16 @@
 
 namespace PreOrder\PreOrderBackend\Jobs\API;
 
+use PreOrder\PreOrderBackend\Models\PreOrder;
+
 class StorePreOrderJob
 {
-    public function __construct(private int $perPage = 10)
+    public function __construct(private array $attributes = [])
     {
     }
 
     public function handle()
     {
-        return [
-            'id'=>1,
-            "name" => "product name",
-            "price" => 200,
-        ];
-//        return Product::query()->paginate($this->perPage);
+        return PreOrder::query()->create($this->attributes);
     }
 }

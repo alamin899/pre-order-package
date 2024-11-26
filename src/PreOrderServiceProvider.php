@@ -3,12 +3,14 @@
 namespace PreOrder\PreOrderBackend;
 
 use Illuminate\Console\Events\CommandFinished;
+use Illuminate\Contracts\Debug\ExceptionHandler;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use PreOrder\Database\Seeders\UserRoleSeeder;
+use PreOrder\PreOrderBackend\Exceptions\CustomExceptionHandler;
 
 class PreOrderServiceProvider extends ServiceProvider
 {
@@ -19,14 +21,14 @@ class PreOrderServiceProvider extends ServiceProvider
         return __DIR__.'/..'.$path;
     }
 
-    public function register()
+    public function register(): void
     {
+        $this->app->singleton(ExceptionHandler::class, CustomExceptionHandler::class);
         $this->mergeConfigFrom(self::basePath("/config/{$this->name}.php"), $this->name);
     }
 
-    public function boot()
+    public function boot(): void
     {
-
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 self::basePath("/config/{$this->name}.php") => config_path("{$this->name}.php"),

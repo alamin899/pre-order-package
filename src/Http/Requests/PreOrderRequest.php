@@ -9,8 +9,7 @@ class PreOrderRequest extends FormRequest
 {
     public function authorize(): bool
     {
-        // Add your authorization logic if needed
-        return true; // Assuming any user can place a pre-order
+        return true;
     }
 
     /**
@@ -20,15 +19,17 @@ class PreOrderRequest extends FormRequest
     {
         $rules = [
             'customer_name' => ['required', 'string', 'max:255'],
-            'customer_email' => ['required', 'email', 'max:255','email:dns,rfc'],
-            'product' => ['required', 'exists:products,slug'],
-            'quantity' => ['required', 'integer', 'min:1'],
+            'customer_email' => ['required', 'email', 'max:255', 'email:dns,rfc'],
+            'products' => ['required', 'array', 'min:1'],
+            'products.*.slug' => ['required', 'exists:products,slug'],
+            'products.*.quantity' => ['required', 'integer', 'min:1'],
             'gRecaptchaToken' => ['required', 'min:5', 'max:1000', new GoogleReCaptchaRule()],
         ];
 
         if ($this->filled('customer_email') && str_ends_with($this->input('customer_email'), '@xyz.com')) {
             $rules['customer_phone'] = ['required', 'max:16', 'min:11', 'regex:/^(\+88|88|0088|\+0088)?(01[3-9]\d{8})$/'];
         }
+
         return $rules;
     }
 
@@ -39,7 +40,10 @@ class PreOrderRequest extends FormRequest
     {
         return [
             'customer_phone.required' => 'A phone number is required if your email ends with @xyz.com.',
-            'product.exists' => 'The selected product is invalid.',
+            'products.*.slug.required' => 'A product slug is required.',
+            'products.*.slug.exists' => 'The selected product is invalid.',
+            'products.*.quantity.required' => 'A quantity is required for each product.',
+            'products.*.quantity.min' => 'Each product must have a quantity of at least 1.',
         ];
     }
 
@@ -55,6 +59,27 @@ class PreOrderRequest extends FormRequest
                 'customer_phone' => '0' . $phone
             ]);
         }
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        $errors = $validator->errors()->toArray();
+
+        $errorData = [];
+        foreach ($errors as $field => $messages) {
+            $errorData[] = [
+                'name' => $field,
+                'message' => $messages[0], // Take the first validation error message
+            ];
+        }
+
+        throw new HttpResponseException(
+            response()->json([
+                'message' => 'Validation failed',
+                'data' => [],
+                'errors' => $errorData,
+            ], 422, [], JSON_PRESERVE_ZERO_FRACTION)
+        );
     }
 
 }
