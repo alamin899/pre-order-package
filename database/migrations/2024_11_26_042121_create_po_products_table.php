@@ -21,6 +21,7 @@ return new class() extends Migration
             $table->float('price')->unique()->nullable();
             $table->boolean('status')->default(true);
             $table->softDeletes();
+            $table->bigInteger('deleted_by_id')->nullable();
             $table->timestamps();
 
         });

@@ -24,8 +24,8 @@ return new class() extends Migration
             $table->integer('quantity')->nullable();
             $table->float('total_amount')->nullable();
             $table->boolean('status')->default(true);
-            $table->bigInteger('deleted_by_id')->nullable();
             $table->softDeletes();
+            $table->bigInteger('deleted_by_id')->nullable();
             $table->timestamps();
         });
 
