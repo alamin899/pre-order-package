@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use PreOrder\Database\Seeders\UserRoleSeeder;
 
 class PreOrderServiceProvider extends ServiceProvider
 {
@@ -37,11 +38,27 @@ class PreOrderServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
+        if ($this->app->runningInConsole()) {
+            $this->runSeeder();
+        }
+
         $this->registerRoutes();
         $this->registerResources();
         $this->defineAssetPublishing();
 //        $this->configureMiddleware();
     }
+
+    protected function runSeeder()
+    {
+        $this->callAfterResolving('db', function () {
+            $seeder = $this->app->make(\PreOrder\Database\Seeders\UserRoleSeeder::class);
+            $seeder->run();
+
+            $anotherSeeder = $this->app->make(\PreOrder\Database\Seeders\ProductSeeder::class);
+            $anotherSeeder->run();
+        });
+    }
+
 
     /**
      * Register the routes.
