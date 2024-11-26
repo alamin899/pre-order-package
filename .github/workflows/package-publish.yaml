@@ -1,0 +1,29 @@
+name: Publish to Packagist
+
+on:
+  push:
+    tags:
+      - 'v[0-9]+.[0-9]+.[0-9]'
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader
+
+      - name: Prepare composer.json
+        run: composer validate
+
+      - name: Publish to Packagist
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PACKAGIST_TOKEN: ${{ secrets.PACKAGIST_TOKEN }}
+        run: |
+          composer config http-basic.repo.packagist.org token $PACKAGIST_TOKEN
+          composer update --no-dev
+          composer validate --strict
