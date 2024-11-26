@@ -1,0 +1,45 @@
+{
+    "name": "pre-order/pre-order-backend",
+    "description": "Pre order package",
+    "keywords": [
+        "pre-order"
+    ],
+    "version": "1.0.0",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Alamin",
+            "email": "alaminhossen899@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0"
+    },
+
+    "autoload": {
+        "psr-4": {
+            "PreOrder\\PreOrderBackend\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PreOrder\\PreOrderBackend\\Tests\\": "tests"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "PreOrder\\PreOrderBackend\\PreOrderServiceProvider"
+            ]
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}
