@@ -2,6 +2,7 @@
 
 namespace PreOrder\PreOrderBackend;
 
+use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
@@ -38,9 +39,11 @@ class PreOrderServiceProvider extends ServiceProvider
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
-        if ($this->app->runningInConsole()) {
-            $this->runSeeder();
-        }
+        $this->app['events']->listen(CommandFinished::class, function (CommandFinished $event) {
+            if ($event->command === 'migrate' && $event->exitCode === 0) {
+                $this->runSeeder();
+            }
+        });
 
         $this->registerRoutes();
         $this->registerResources();
@@ -48,7 +51,7 @@ class PreOrderServiceProvider extends ServiceProvider
 //        $this->configureMiddleware();
     }
 
-    protected function runSeeder()
+    protected function runSeeder(): void
     {
         $this->callAfterResolving('db', function () {
             $seeder = $this->app->make(\PreOrder\Database\Seeders\UserRoleSeeder::class);
