@@ -1,22 +1,24 @@
 <?php
 
 namespace PreOrder\PreOrderBackend\Traits;
+
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
+
 trait SoftDeletedBy
 {
-    public static function bootSoftDeletesWithDeletedBy()
+    public static function bootSoftDeletedBy(): void
     {
         static::deleting(function (Model $model) {
-            if ($model->usesSoftDeletes() && Auth::check()) {
-                $model->deleted_by_id = Auth::id();
+            if ($model->isUsingSoftDeletes() && Auth::check()) {
+                $model->setAttribute('deleted_by_id', Auth::id());
                 $model->saveQuietly();
             }
         });
     }
 
-    public function usesSoftDeletes()
+    public function isUsingSoftDeletes(): bool
     {
-        return in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses_recursive($this));
+        return in_array('Illuminate\Database\Eloquent\SoftDeletes', class_uses_recursive(static::class));
     }
 }

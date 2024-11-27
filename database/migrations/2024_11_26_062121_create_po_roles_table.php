@@ -21,6 +21,7 @@ return new class() extends Migration
             $table->string('description')->nullable();
             $table->boolean('status')->default(true);
             $table->timestamps();
+            $table->bigInteger('deleted_by_id')->nullable();
             $table->softDeletes();
         });
     }

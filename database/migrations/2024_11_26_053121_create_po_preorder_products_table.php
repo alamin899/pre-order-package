@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 
 return new class() extends Migration
@@ -13,18 +14,20 @@ return new class() extends Migration
      */
     public function up(): void
     {
-        Schema::create('po_products', function (Blueprint $table) {
+
+        Schema::create('po_preorder_products', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->nullable();
-            $table->string('slug')->unique()->nullable();
-            $table->text('description')->nullable();
-            $table->float('price')->unique()->nullable();
+            $table->foreignId('order_id');
+            $table->foreignId('product_id');
+            $table->float('unit_price')->nullable();
+            $table->integer('quantity')->nullable();
+            $table->float('total_amount')->nullable();
             $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->bigInteger('deleted_by_id')->nullable();
             $table->timestamps();
-
         });
+
     }
 
     /**
@@ -34,6 +37,6 @@ return new class() extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('pre_order_products');
+        Schema::dropIfExists('po_preorder_products');
     }
 };
