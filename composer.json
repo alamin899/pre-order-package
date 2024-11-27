@@ -18,7 +18,8 @@
 
     "autoload": {
         "psr-4": {
-            "PreOrder\\PreOrderBackend\\": "src"
+            "PreOrder\\PreOrderBackend\\": "src",
+            "PreOrder\\Database\\Seeders\\": "database/seeders"
         }
     },
     "autoload-dev": {
