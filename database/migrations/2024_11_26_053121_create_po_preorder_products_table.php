@@ -19,6 +19,7 @@ return new class() extends Migration
             $table->id();
             $table->foreignId('order_id');
             $table->foreignId('product_id');
+            $table->float('unit_price')->nullable();
             $table->integer('quantity')->nullable();
             $table->float('total_amount')->nullable();
             $table->boolean('status')->default(true);

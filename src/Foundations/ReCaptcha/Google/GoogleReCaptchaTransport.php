@@ -8,7 +8,7 @@ class GoogleReCaptchaTransport
 {
     public static function handle($gRecaptchaToken = ''): array
     {
-        $recaptcha = config('recaptcha.google');
+        $recaptcha = config('setting.google');
         return Http::withHeaders(['Content-Type' => 'application/x-www-form-urlencoded'])->asForm()
             ->post($recaptcha['token_verify_url'], [
                 "secret" => $recaptcha['api_secret_key'],

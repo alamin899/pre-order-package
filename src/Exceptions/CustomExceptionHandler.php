@@ -32,8 +32,8 @@ class CustomExceptionHandler extends ExceptionHandler
 
     public function render($request, Throwable $exception)
     {
-        if (! Request::ajax()) {
-            return parent::render($request, $exception);
+        if ($request->is('/api/*') && !$request->ajax()) {
+            abort(403, 'Forbidden');
         }
 
         $exceptionClass = get_class($exception);
@@ -46,7 +46,17 @@ class CustomExceptionHandler extends ExceptionHandler
             MethodNotAllowedHttpException::class => JsonResponder::response(message: $message, statusCode: Response::HTTP_METHOD_NOT_ALLOWED),
             ModelNotFoundException::class => JsonResponder::response(message: 'The resource is not found', statusCode: Response::HTTP_NOT_FOUND),
             ValidationException::class => JsonResponder::response(message: 'Validation Failed', errors: $exception->errors(), statusCode: Response::HTTP_UNPROCESSABLE_ENTITY),
-            ThrottleRequestsException::class => $pathExist ? JsonResponder::response(message: 'Too Many Attempts Please Contact With Authority.', errors: ['phone' => ['Too Many Attempts Please Contact With Authority.']], statusCode: Response::HTTP_UNPROCESSABLE_ENTITY) : JsonResponder::errorResponse(message: 'Too Many Attempts.', errors: ['message' => ['Too Many Attempts.']], statusCode: Response::HTTP_TOO_MANY_REQUESTS),
+            ThrottleRequestsException::class => $pathExist
+                ? JsonResponder::response(
+                    message: 'Too Many Attempts. Please contact with the authority.',
+                    errors: ['phone' => ['Too Many Attempts. Please contact with the authority. Try again after ' . (($retryAfter = $exception->getHeaders()['Retry-After'] ?? 0) ? ($retryAfter > 60 ? intdiv($retryAfter, 60) . ' minutes and ' . ($retryAfter % 60) . ' seconds' : $retryAfter . ' seconds') : 'a moment') . '.']],
+                    statusCode: Response::HTTP_UNPROCESSABLE_ENTITY
+                )
+                : JsonResponder::response(
+                    message: 'Too Many Attempts.',
+                    errors: ['message' => ['Too Many Attempts. Try again after ' . (($retryAfter = $exception->getHeaders()['Retry-After'] ?? 0) ? ($retryAfter > 60 ? intdiv($retryAfter, 60) . ' minutes and ' . ($retryAfter % 60) . ' seconds' : $retryAfter . ' seconds') : 'a moment') . '.']],
+                    statusCode: Response::HTTP_TOO_MANY_REQUESTS
+                ),
             HttpException::class => JsonResponder::response(message: $message, errors: ['message' => [$message]], statusCode: Response::HTTP_SERVICE_UNAVAILABLE),
             default => JsonResponder::response(message:$message, errors: ['message' => [$message]], statusCode: Response::HTTP_INTERNAL_SERVER_ERROR),
         };

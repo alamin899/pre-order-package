@@ -15,7 +15,7 @@ class GetProductBySlugJob
     public function handle()
     {
         $query = Product::query()
-            ->select('name', 'slug', 'description', 'price', 'status')
+            ->select('id','name', 'slug', 'description', 'price', 'status')
             ->where('status', true);
 
         if (is_array($this->slug)) {
