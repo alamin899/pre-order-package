@@ -1,6 +1,6 @@
 <?php
 
-namespace PreOrder\PreOrderBackend\Jobs\API;
+namespace PreOrder\PreOrderBackend\Jobs;
 
 use PreOrder\PreOrderBackend\Models\PreOrder;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace PreOrder\PreOrderBackend\Jobs\API;
+namespace PreOrder\PreOrderBackend\Jobs;
 
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use PreOrder\PreOrderBackend\Models\Product;
