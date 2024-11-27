@@ -41,6 +41,7 @@ class StorePreOrderFeature
             $price = $product['price'] ?? 0;
             $orderProductsInfo[] = [
                 'product_id' => $product['id'] ?? null,
+                'unit_price' => $product['price'] ?? 0,
                 'quantity' => $quantity,
                 'total_amount' => $quantity*$price,
                 'status' => true

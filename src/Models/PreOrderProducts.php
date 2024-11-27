@@ -12,5 +12,5 @@ class PreOrderProducts extends Model
     use HasFactory,SoftDeletes,SoftDeletedBy;
 
     protected $table = 'po_preorder_products';
-    protected $fillable = ['order_id', 'product_id', 'quantity', 'total_amount', 'status','deleted_by_id'];
+    protected $fillable = ['order_id', 'product_id','unit_price','quantity', 'total_amount', 'status','deleted_by_id'];
 }

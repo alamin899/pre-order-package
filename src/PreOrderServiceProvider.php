@@ -4,11 +4,10 @@ namespace PreOrder\PreOrderBackend;
 
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Contracts\Debug\ExceptionHandler;
-use Illuminate\Contracts\Http\Kernel;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
+use PreOrder\Database\Seeders\ProductSeeder;
 use PreOrder\Database\Seeders\UserRoleSeeder;
 use PreOrder\PreOrderBackend\Exceptions\CustomExceptionHandler;
 
@@ -56,10 +55,10 @@ class PreOrderServiceProvider extends ServiceProvider
     protected function runSeeder(): void
     {
         $this->callAfterResolving('db', function () {
-            $seeder = $this->app->make(\PreOrder\Database\Seeders\UserRoleSeeder::class);
+            $seeder = $this->app->make(UserRoleSeeder::class);
             $seeder->run();
 
-            $anotherSeeder = $this->app->make(\PreOrder\Database\Seeders\ProductSeeder::class);
+            $anotherSeeder = $this->app->make(ProductSeeder::class);
             $anotherSeeder->run();
         });
     }

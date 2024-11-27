@@ -19,9 +19,9 @@ class PreOrderRequest extends FormRequest
     {
         $rules = [
             'customer_name' => ['required', 'string', 'max:255'],
-            'customer_email' => ['required', 'email', 'max:255', 'email:dns,rfc'],
+            'customer_email' => ['required', 'email', 'max:255'],
             'products' => ['required', 'array', 'min:1'],
-            'products.*.slug' => ['required', 'exists:products,slug'],
+            'products.*.slug' => ['required', 'exists:po_products,slug'],
             'products.*.quantity' => ['required', 'integer', 'min:1'],
             'gRecaptchaToken' => ['required', 'min:5', 'max:1000', new GoogleReCaptchaRule()],
         ];
@@ -46,40 +46,4 @@ class PreOrderRequest extends FormRequest
             'products.*.quantity.min' => 'Each product must have a quantity of at least 1.',
         ];
     }
-
-    protected function prepareForValidation(): void
-    {
-        if ($this->has('customer_phone')) {
-            $phone = (string)ltrim($this->phone ?? '', '+88');
-            $phone = (string)ltrim($phone, '88');
-            $phone = (string)ltrim($phone, '0088');
-            $phone = (string)ltrim($phone, '+0088');
-
-            $this->merge([
-                'customer_phone' => '0' . $phone
-            ]);
-        }
-    }
-
-    protected function failedValidation(Validator $validator): void
-    {
-        $errors = $validator->errors()->toArray();
-
-        $errorData = [];
-        foreach ($errors as $field => $messages) {
-            $errorData[] = [
-                'name' => $field,
-                'message' => $messages[0], // Take the first validation error message
-            ];
-        }
-
-        throw new HttpResponseException(
-            response()->json([
-                'message' => 'Validation failed',
-                'data' => [],
-                'errors' => $errorData,
-            ], 422, [], JSON_PRESERVE_ZERO_FRACTION)
-        );
-    }
-
 }
