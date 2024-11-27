@@ -3,7 +3,7 @@
 namespace PreOrder\PreOrderBackend\Features\API;
 
 use PreOrder\PreOrderBackend\Http\Resources\ProductResource;
-use PreOrder\PreOrderBackend\Jobs\API\ProductListJob;
+use PreOrder\PreOrderBackend\Jobs\ProductListJob;
 use Symfony\Component\HttpFoundation\Response;
 
 class ProductListFeature

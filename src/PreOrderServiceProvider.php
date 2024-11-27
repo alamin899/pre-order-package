@@ -10,6 +10,8 @@ use Illuminate\Support\Str;
 use PreOrder\Database\Seeders\ProductSeeder;
 use PreOrder\Database\Seeders\UserRoleSeeder;
 use PreOrder\PreOrderBackend\Exceptions\CustomExceptionHandler;
+use PreOrder\PreOrderBackend\Http\Middleware\CustomAuthMiddleware;
+use PreOrder\PreOrderBackend\Http\Middleware\CustomGuestMiddleware;
 
 class PreOrderServiceProvider extends ServiceProvider
 {
@@ -22,6 +24,10 @@ class PreOrderServiceProvider extends ServiceProvider
 
     public function register(): void
     {
+        $this->app['router']->aliasMiddleware('custom-auth',CustomAuthMiddleware::class);
+        $this->app['router']->aliasMiddleware('custom-guest',CustomGuestMiddleware::class);
+        $this->loadViewsFrom(__DIR__.'/../resources/views', 'preorder');
+
         $this->app->singleton(ExceptionHandler::class, CustomExceptionHandler::class);
         $this->mergeConfigFrom(self::basePath("/config/{$this->name}.php"), $this->name);
     }

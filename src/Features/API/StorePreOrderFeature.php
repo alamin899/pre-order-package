@@ -3,9 +3,9 @@
 namespace PreOrder\PreOrderBackend\Features\API;
 
 use Illuminate\Support\Facades\DB;
-use PreOrder\PreOrderBackend\Jobs\API\GetProductBySlugJob;
-use PreOrder\PreOrderBackend\Jobs\API\StorePreOrderJob;
+use PreOrder\PreOrderBackend\Jobs\GetProductBySlugJob;
 use PreOrder\PreOrderBackend\Jobs\SendOrderEmail;
+use PreOrder\PreOrderBackend\Jobs\StorePreOrderJob;
 use Symfony\Component\HttpFoundation\Response;
 
 class StorePreOrderFeature

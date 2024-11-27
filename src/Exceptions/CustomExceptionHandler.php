@@ -34,6 +34,8 @@ class CustomExceptionHandler extends ExceptionHandler
     {
         if ($request->is('/api/*') && !$request->ajax()) {
             abort(403, 'Forbidden');
+        }else{
+            return parent::render($request, $exception);
         }
 
         $exceptionClass = get_class($exception);
