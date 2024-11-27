@@ -5,6 +5,7 @@ namespace PreOrder\PreOrderBackend\Features\API;
 use Illuminate\Support\Facades\DB;
 use PreOrder\PreOrderBackend\Jobs\API\GetProductBySlugJob;
 use PreOrder\PreOrderBackend\Jobs\API\StorePreOrderJob;
+use PreOrder\PreOrderBackend\Jobs\SendOrderEmail;
 use Symfony\Component\HttpFoundation\Response;
 
 class StorePreOrderFeature
@@ -52,14 +53,15 @@ class StorePreOrderFeature
         $orderInfo['quantity'] = $totalOrderQuantity;
         $orderInfo['total_amount'] = $totalOrderPrice;
 
-        DB::transaction(function () use ($orderInfo, $orderProductsInfo) {
+        $order = DB::transaction(function () use ($orderInfo, $orderProductsInfo) {
             $order = (new StorePreOrderJob($orderInfo))->handle();
 
             $order->preOrderProducts()->createMany($orderProductsInfo);
 
-//            $this->sendMailToClient($user, $order);
-//            $this->sendMailToAdmin($order);
+            return $order;
         });
+
+        SendOrderEmail::dispatch($order);
 
         return [
             'message' => 'Your order successfully created.',
