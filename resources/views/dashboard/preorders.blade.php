@@ -8,9 +8,12 @@
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <input type="text" id="tableSearch" class="form-control mr-3" placeholder="Search in the table...">
-            <button id="searchButton" class="pl-2 btn btn-primary">Search</button>
+            <form action="{{ route('dashboard.preorders') }}" method="GET" class="w-100 d-flex">
+                <input type="text" id="tableSearch" name="query" class="form-control mr-3" placeholder="Search in the table..." value="{{ request()->get('query') }}">
+                <button id="searchButton" type="submit" class="pl-2 btn btn-primary">Search</button>
+            </form>
         </div>
+
         <div class="card-body">
             <!-- Table -->
             <table class="table table-bordered table-striped">
@@ -21,6 +24,7 @@
                     <th>Customer Contact</th>
                     <th>Quantity</th>
                     <th>Amount</th>
+                    <th>Data</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -32,6 +36,7 @@
                         <td>{{ $preorder->customer_email }}<br>{{ $preorder->customer_phone }}</td>
                         <td>{{$preorder->quantity}}</td>
                         <td>{{$preorder->total_amount}}</td>
+                        <td>{{ \Carbon\Carbon::parse($preorder->created_at)->format('d M Y H:i A') }}</td>
                         <td>
                             <form action="{{ route('dashboard.preorders.destroy', [$preorder->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this pre order?')">
                                 @csrf

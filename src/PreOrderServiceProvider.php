@@ -4,6 +4,7 @@ namespace PreOrder\PreOrderBackend;
 
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
@@ -100,6 +101,25 @@ class PreOrderServiceProvider extends ServiceProvider
         });
     }
 
+    protected function defineDefaultGates()
+    {
+        if (! Gate::has('downloadLogFile')) {
+            Gate::define('downloadLogFile', function ($user, LogFile $file) {
+                return $user->role === 'admin'; // Allow only admins to download
+            });        }
+
+        if (! Gate::has('downloadLogFolder')) {
+            Gate::define('downloadLogFolder', fn (mixed $user, LogFolder $folder) => true);
+        }
+
+        if (! Gate::has('deleteLogFile')) {
+            Gate::define('deleteLogFile', fn (mixed $user, LogFile $file) => true);
+        }
+
+        if (! Gate::has('deleteLogFolder')) {
+            Gate::define('deleteLogFolder', fn (mixed $user, LogFolder $folder) => true);
+        }
+    }
     protected function registerResources(): void
     {
         $this->loadViewsFrom(self::basePath('/resources/views'), 'pre-order');

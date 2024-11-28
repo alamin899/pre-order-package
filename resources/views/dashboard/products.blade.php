@@ -8,8 +8,10 @@
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <input type="text" id="tableSearch" class="form-control mr-3" placeholder="Search in the table...">
-            <button id="searchButton" class="pl-2 btn btn-primary">Search</button>
+            <form action="{{ route('dashboard.products') }}" method="GET" class="w-100 d-flex">
+                <input type="text" id="tableSearch" name="query" class="form-control mr-3" placeholder="Search in the table..." value="{{ request()->get('query') }}">
+                <button id="searchButton" type="submit" class="pl-2 btn btn-primary">Search</button>
+            </form>
         </div>
         <div class="card-body">
             <!-- Table -->
