@@ -20,9 +20,13 @@ class ProductSearchValue
             $perPage = 50;
         }
 
+        $orderBy = $this->request->get("orderby");
+        $orderBy = ($orderBy == "desc") ? "desc" : "asc";
+
         return [
             'query' => $this->request->get('query', ''),
-            'sortable' => $this->request->get('sortBy', ''),
+            'order_by' => $orderBy,
+            'column' => $this->request->get('column', 'id'),
             'per_page' => $perPage,
         ];
     }

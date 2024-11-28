@@ -18,8 +18,11 @@ class ProductListJob
 
     public function handle(): LengthAwarePaginator
     {
+        $columns = ['id','name', 'slug', 'description', 'price', 'status'];
+        $column = in_array($this->column, $columns) ? $this->column : 'id';
+
         $products = Product::query()
-            ->select('id','name', 'slug', 'description', 'price', 'status')
+            ->select($columns)
             ->where('status', true);
 
         if ($this->query) {
@@ -27,7 +30,7 @@ class ProductListJob
                 ->orWhere('slug', 'like', "%{$this->query}%");
         }
 
-        $products->orderBy($this->column, $this->orderBy);
+        $products->orderBy($column, $this->orderBy);
 
         return $products->paginate($this->perPage);
     }

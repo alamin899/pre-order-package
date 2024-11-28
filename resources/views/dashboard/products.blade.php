@@ -8,11 +8,26 @@
 @section('content')
     <div class="card">
         <div class="card-header d-flex justify-content-between">
-            <form action="{{ route('dashboard.products') }}" method="GET" class="w-100 d-flex">
-                <input type="text" id="tableSearch" name="query" class="form-control mr-3" placeholder="Search in the table..." value="{{ request()->get('query') }}">
-                <button id="searchButton" type="submit" class="pl-2 btn btn-primary">Search</button>
+            <form action="{{ route('dashboard.products') }}" method="GET" class="w-100 d-flex align-items-center">
+                <input type="text" id="tableSearch" name="query" class="form-control" style="margin-right: 10px !important;" placeholder="Search in the table..." value="{{ request()->get('query') }}">
+
+                <select name="column" class="form-control mr-2" style="margin-right: 10px !important;">
+                    <option value="">Select Column</option>
+                    <option value="id" {{ request()->get('column') == 'id' ? 'selected' : '' }}>ID</option>
+                    <option value="name" {{ request()->get('column') == 'name' ? 'selected' : '' }}>Name</option>
+                    <option value="price" {{ request()->get('column') == 'price' ? 'selected' : '' }}>Price</option>
+                </select>
+
+                <select name="orderby" class="form-control" style="margin-right: 10px !important;">
+                    <option value="">Select Order</option>
+                    <option value="desc" {{ request()->get('orderby') == 'desc' ? 'selected' : '' }}>Descending</option>
+                    <option value="asc" {{ request()->get('orderby') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                </select>
+
+                <button id="searchButton" type="submit" class="btn btn-primary">Search</button>
             </form>
         </div>
+
         <div class="card-body">
             <!-- Table -->
             <table class="table table-bordered table-striped">

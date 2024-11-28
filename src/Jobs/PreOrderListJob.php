@@ -18,8 +18,11 @@ class PreOrderListJob
 
     public function handle(): LengthAwarePaginator
     {
+        $columns = ['id','customer_name', 'customer_phone', 'customer_email', 'quantity', 'total_amount','created_at'];
+        $column = in_array($this->column, $columns) ? $this->column : 'id';
+
         $preOrders = PreOrder::query()
-            ->select('id','customer_name', 'customer_phone', 'customer_email', 'quantity', 'total_amount','created_at')
+            ->select($columns)
             ->where('status', true);
 
         if ($this->query) {
@@ -27,7 +30,7 @@ class PreOrderListJob
             ->orWhere('customer_email', 'like', "%{$this->query}%");
         }
 
-        $preOrders->orderBy($this->column, $this->orderBy);
+        $preOrders->orderBy($column, $this->orderBy);
 
         return $preOrders->paginate($this->perPage);
     }

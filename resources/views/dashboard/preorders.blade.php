@@ -9,7 +9,22 @@
     <div class="card">
         <div class="card-header d-flex justify-content-between">
             <form action="{{ route('dashboard.preorders') }}" method="GET" class="w-100 d-flex">
-                <input type="text" id="tableSearch" name="query" class="form-control mr-3" placeholder="Search in the table..." value="{{ request()->get('query') }}">
+                <input type="text" id="tableSearch" name="query" class="form-control" style="margin-right: 10px !important;" placeholder="Search in the table..." value="{{ request()->get('query') }}">
+
+                <select name="column" class="form-control mr-2" style="margin-right: 10px !important;">
+                    <option value="">Select Column</option>
+                    <option value="id" {{ request()->get('column') == 'id' ? 'selected' : '' }}>ID</option>
+                    <option value="customer_name" {{ request()->get('column') == 'customer_name' ? 'selected' : '' }}>Customer Name</option>
+                    <option value="customer_phone" {{ request()->get('column') == 'customer_phone' ? 'selected' : '' }}>Customer Phone</option>
+                    <option value="customer_email" {{ request()->get('column') == 'customer_email' ? 'selected' : '' }}>Customer Email</option>
+                    <option value="quantity" {{ request()->get('column') == 'quantity' ? 'selected' : '' }}>Quantity</option>
+                    <option value="total_amount" {{ request()->get('column') == 'total_amount' ? 'selected' : '' }}>Total Amount</option>
+                </select>
+                <select name="orderby" class="form-control" style="margin-right: 10px !important;">
+                    <option value="">Select Order</option>
+                    <option value="desc" {{ request()->get('orderby') == 'desc' ? 'selected' : '' }}>Descending</option>
+                    <option value="asc" {{ request()->get('orderby') == 'asc' ? 'selected' : '' }}>Ascending</option>
+                </select>
                 <button id="searchButton" type="submit" class="pl-2 btn btn-primary">Search</button>
             </form>
         </div>
