@@ -21,6 +21,7 @@
                     <th>Customer Contact</th>
                     <th>Quantity</th>
                     <th>Amount</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -31,6 +32,13 @@
                         <td>{{ $preorder->customer_email }}<br>{{ $preorder->customer_phone }}</td>
                         <td>{{$preorder->quantity}}</td>
                         <td>{{$preorder->total_amount}}</td>
+                        <td>
+                            <form action="{{ route('dashboard.preorders.destroy', [$preorder->id]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this pre order?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Destroy</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>

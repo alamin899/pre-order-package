@@ -3,7 +3,6 @@
 namespace PreOrder\PreOrderBackend\Http\Controllers\Web\Auth;
 
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Session;
 use PreOrder\PreOrderBackend\Http\Controllers\Controller;
 use PreOrder\PreOrderBackend\Http\Requests\LoginRequest;
 use PreOrder\PreOrderBackend\Models\User;

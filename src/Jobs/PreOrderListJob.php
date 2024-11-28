@@ -17,7 +17,7 @@ class PreOrderListJob
     public function handle(): LengthAwarePaginator
     {
         $products = PreOrder::query()
-            ->select('customer_name', 'customer_phone', 'customer_email', 'quantity', 'total_amount', 'status','deleted_by_id')
+            ->select('id','customer_name', 'customer_phone', 'customer_email', 'quantity', 'total_amount')
             ->where('status', true);
 
         if ($this->query) {

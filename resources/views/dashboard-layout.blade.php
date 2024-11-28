@@ -38,7 +38,6 @@
 <body>
 <!-- Sidebar -->
 <div class="sidebar">
-    {{request()->routeIs('dashboard')}}
     <h3 class="text-center">Dashboard</h3>
     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Home</a>
     <a href="{{ route('dashboard.products') }}" class="{{ request()->routeIs('dashboard.products') ? 'active' : '' }}">Products</a>
@@ -55,7 +54,21 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>@yield('page-title', 'Dashboard')</h2>
-        <span>Welcome,  {{\Illuminate\Support\Facades\Session::get('auth_user')->name}}</span>
+        <span>Welcome,  {{\PreOrder\PreOrderBackend\Facade\CustomAuth::user()->name}}</span>
+    </div>
+    <div>
+        @if (session('success'))
+            <div class="alert alert-success" id="success-alert">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if (session('error'))
+            <div class="alert alert-danger" id="error-alert">
+                {{ session('error') }}
+            </div>
+        @endif
+
     </div>
 
     <!-- Page Content -->
@@ -68,6 +81,27 @@
     document.getElementById('logout-link').addEventListener('click', function (e) {
         e.preventDefault();
         document.getElementById('logout-form').submit();
+    });
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const successAlert = document.getElementById('success-alert');
+        const errorAlert = document.getElementById('error-alert');
+
+        if (successAlert) {
+            setTimeout(() => {
+                successAlert.style.transition = 'opacity 0.5s ease';
+                successAlert.style.opacity = '0';
+                setTimeout(() => successAlert.remove(), 500); // Remove after fade-out
+            }, 10000); // 10 seconds
+        }
+
+        if (errorAlert) {
+            setTimeout(() => {
+                errorAlert.style.transition = 'opacity 0.5s ease';
+                errorAlert.style.opacity = '0';
+                setTimeout(() => errorAlert.remove(), 500); // Remove after fade-out
+            }, 10000); // 10 seconds
+        }
     });
 </script>
 

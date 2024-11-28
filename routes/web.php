@@ -7,6 +7,8 @@ use PreOrder\PreOrderBackend\Http\Controllers\Web\Auth\ShowLoginController;
 use PreOrder\PreOrderBackend\Http\Controllers\Web\Dashboard\DashboardController;
 use PreOrder\PreOrderBackend\Http\Controllers\Web\Dashboard\PreOrderListController;
 use PreOrder\PreOrderBackend\Http\Controllers\Web\Dashboard\ProductListController;
+use PreOrder\PreOrderBackend\Http\Controllers\Web\PreorderDestroyController;
+use PreOrder\PreOrderBackend\Http\Controllers\Web\ProductDestroyController;
 
 Route::group([], function () {
     Route::middleware(['custom-guest'])->group(function () {
@@ -17,7 +19,12 @@ Route::group([], function () {
     Route::middleware(['custom-auth'])->group(function () {
         Route::post('logout', LogoutController::class)->name('auth.logout');
         Route::get('dashboard', DashboardController::class)->name('dashboard');
-        Route::get('products', ProductListController::class)->name('dashboard.products');
-        Route::get('preorders', PreOrderListController::class)->name('dashboard.preorders');
+
+        Route::group(['as' => 'dashboard.'], function () {
+            Route::get('products', ProductListController::class)->name('products');
+            Route::delete('products/{product:slug}', ProductDestroyController::class)->name('product.destroy');
+            Route::get('preorders', PreOrderListController::class)->name('preorders');
+            Route::delete('preorders/{id}', PreorderDestroyController::class)->name('preorders.destroy');
+        });
     });
 });

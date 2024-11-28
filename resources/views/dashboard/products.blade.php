@@ -19,6 +19,7 @@
                     <th>#</th>
                     <th>Name</th>
                     <th>Price</th>
+                    <th>Action</th>
                 </tr>
                 </thead>
                 <tbody id="tableBody">
@@ -27,6 +28,13 @@
                         <td>{{ $products->firstItem() + $index }}</td>
                         <td>{{ $product->name }}</td>
                         <td>{{ $product->price }}</td>
+                        <td>
+                            <form action="{{ route('dashboard.product.destroy', [$product->slug]) }}" method="POST" onsubmit="return confirm('Are you sure you want to delete this product?')">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm">Destroy</button>
+                            </form>
+                        </td>
                     </tr>
                 @endforeach
                 </tbody>
@@ -38,3 +46,4 @@
         </div>
     </div>
 @endsection
+
