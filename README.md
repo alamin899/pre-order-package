@@ -14,6 +14,32 @@ composer require pre-order/pre-order-backend
 php artisan migrate
 ```
 
+#### Available API endpoints
+```sh
+[GET] http://baseurl/pre-order/api/products?query="ddd" [query optional]
+[POST] http://baseurl/pre-order/api/pre-order
+## order data:
+{
+    "gRecaptchaToken":"123456465465456490890890898",
+    "customer_name": "alamin",
+    "customer_email": "alamin@xyz.com",
+    "customer_phone": "01758845297",
+    "products": [
+        {
+            "slug": "voluptatum-odio",
+            "quantity": 2
+        }
+    ]
+}
+```
+#### Available Web endpoints
+````
+http://baseurl/pre-order/login
+login credential:
+    email : admin@xyz.com or manager@xyz.com
+    password: password
+````
+
 ## Google Captcha Configuration
 
 #### Add your application .env
