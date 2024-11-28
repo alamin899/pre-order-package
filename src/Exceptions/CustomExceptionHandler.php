@@ -5,7 +5,6 @@ namespace PreOrder\PreOrderBackend\Exceptions;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\Exceptions\ThrottleRequestsException;
-use Illuminate\Http\Request;
 use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use PreOrder\PreOrderBackend\Helpers\JsonResponder;
@@ -41,7 +40,7 @@ class CustomExceptionHandler extends ExceptionHandler
         $exceptionClass = get_class($exception);
         $message = $exception->getMessage();
 
-        $pathExist = in_array($request->path(), ['api/v1/otp/resend', 'api/v1/otp/phone', 'api/v1/registration/phone', 'api/v2/login', 'api/v2/registration']);
+        $pathExist = in_array($request->path(), ['api/products', 'api/pre-orders']);
 
         return match ($exceptionClass) {
             NotFoundHttpException::class => JsonResponder::response(message: 'Route Not Found', statusCode: Response::HTTP_NOT_FOUND),

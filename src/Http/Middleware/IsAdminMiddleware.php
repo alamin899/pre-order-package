@@ -6,14 +6,20 @@ use Closure;
 use Illuminate\Http\Request;
 use PreOrder\PreOrderBackend\Facade\CustomAuth;
 
-class CustomAuthMiddleware
+class IsAdminMiddleware
 {
     public function handle(Request $request, Closure $next)
     {
         if (!CustomAuth::check()) {
             return redirect()->route('auth.login')->with('error', 'Please log in first.');
-        }
+        } else {
+            $user = CustomAuth::user();
 
-        return $next($request);
+            if ($user && $user->roles->contains('name', 'admin')) {
+                return $next($request);
+            } else {
+                abort(403);
+            }
+        }
     }
 }

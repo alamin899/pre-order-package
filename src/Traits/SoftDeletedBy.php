@@ -3,15 +3,15 @@
 namespace PreOrder\PreOrderBackend\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Auth;
+use PreOrder\PreOrderBackend\Facade\CustomAuth;
 
 trait SoftDeletedBy
 {
     public static function bootSoftDeletedBy(): void
     {
         static::deleting(function (Model $model) {
-            if ($model->isUsingSoftDeletes() && Auth::check()) {
-                $model->setAttribute('deleted_by_id', Auth::id());
+            if ($model->isUsingSoftDeletes() && CustomAuth::check()) {
+                $model->setAttribute('deleted_by_id', CustomAuth::id());
                 $model->saveQuietly();
             }
         });

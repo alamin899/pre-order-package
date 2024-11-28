@@ -4,19 +4,24 @@ namespace PreOrder\PreOrderBackend;
 
 use Illuminate\Console\Events\CommandFinished;
 use Illuminate\Contracts\Debug\ExceptionHandler;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use PreOrder\Database\Seeders\ProductSeeder;
 use PreOrder\Database\Seeders\UserRoleSeeder;
+use PreOrder\PreOrderBackend\Events\SendOrderEmail;
 use PreOrder\PreOrderBackend\Exceptions\CustomExceptionHandler;
+use PreOrder\PreOrderBackend\Facade\services\CustomAuthService;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomAuthMiddleware;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomGuestMiddleware;
+use PreOrder\PreOrderBackend\Http\Middleware\IsAdminMiddleware;
+use PreOrder\PreOrderBackend\Listener\SendAdminMail;
+use PreOrder\PreOrderBackend\Listener\SendCustomerMail;
 
 class PreOrderServiceProvider extends ServiceProvider
 {
     private string $name = 'setting';
-
     public static function basePath(string $path): string
     {
         return __DIR__.'/..'.$path;
@@ -24,14 +29,23 @@ class PreOrderServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app['router']->aliasMiddleware('custom-auth',CustomAuthMiddleware::class);
-        $this->app['router']->aliasMiddleware('custom-guest',CustomGuestMiddleware::class);
+        $this->registerMiddleware();
+
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'preorder');
 
         $this->app->singleton(ExceptionHandler::class, CustomExceptionHandler::class);
+        $this->app->singleton('customauth', function ($app) {
+            return new CustomAuthService();
+        });
         $this->mergeConfigFrom(self::basePath("/config/{$this->name}.php"), $this->name);
     }
 
+    protected function registerMiddleware(): void
+    {
+        $this->app['router']->aliasMiddleware('custom-auth', CustomAuthMiddleware::class);
+        $this->app['router']->aliasMiddleware('custom-guest', CustomGuestMiddleware::class);
+        $this->app['router']->aliasMiddleware('is-admin', IsAdminMiddleware::class);
+    }
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
@@ -51,6 +65,9 @@ class PreOrderServiceProvider extends ServiceProvider
                 $this->runSeeder();
             }
         });
+
+        Event::listen(SendOrderEmail::class, [SendAdminMail::class, 'handle']);
+        Event::listen(SendOrderEmail::class, [SendCustomerMail::class, 'handle']);
 
         $this->registerRoutes();
         $this->registerResources();
@@ -95,7 +112,6 @@ class PreOrderServiceProvider extends ServiceProvider
             $this->loadRoutesFrom(self::basePath('/routes/web.php'));
         });
     }
-
     protected function registerResources(): void
     {
         $this->loadViewsFrom(self::basePath('/resources/views'), 'pre-order');

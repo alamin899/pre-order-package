@@ -2,13 +2,13 @@
 
 namespace PreOrder\PreOrderBackend\Mail;
 
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use PreOrder\PreOrderBackend\Models\PreOrder;
-use PreOrder\PreOrderBackend\Models\User;
 
-class OrderCreateAdminMail extends Mailable
+class OrderCreateAdminMail extends Mailable implements ShouldQueue
 {
     use Queueable, SerializesModels;
 
