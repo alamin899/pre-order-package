@@ -22,9 +22,9 @@ Route::group([], function () {
 
         Route::group(['as' => 'dashboard.'], function () {
             Route::get('products', ProductListController::class)->name('products');
-            Route::delete('products/{product:slug}', ProductDestroyController::class)->name('product.destroy');
+            Route::delete('products/{product:slug}', ProductDestroyController::class)->name('product.destroy')->middleware('is-admin');
             Route::get('preorders', PreOrderListController::class)->name('preorders');
-            Route::delete('preorders/{id}', PreorderDestroyController::class)->name('preorders.destroy');
+            Route::delete('preorders/{id}', PreorderDestroyController::class)->name('preorders.destroy')->middleware('is-admin');
         });
     });
 });

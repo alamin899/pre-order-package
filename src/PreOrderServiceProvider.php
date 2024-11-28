@@ -14,6 +14,7 @@ use PreOrder\PreOrderBackend\Exceptions\CustomExceptionHandler;
 use PreOrder\PreOrderBackend\Facade\services\CustomAuthService;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomAuthMiddleware;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomGuestMiddleware;
+use PreOrder\PreOrderBackend\Http\Middleware\IsAdminMiddleware;
 
 class PreOrderServiceProvider extends ServiceProvider
 {
@@ -26,8 +27,8 @@ class PreOrderServiceProvider extends ServiceProvider
 
     public function register(): void
     {
-        $this->app['router']->aliasMiddleware('custom-auth',CustomAuthMiddleware::class);
-        $this->app['router']->aliasMiddleware('custom-guest',CustomGuestMiddleware::class);
+        $this->registerMiddleware();
+
         $this->loadViewsFrom(__DIR__.'/../resources/views', 'preorder');
 
         $this->app->singleton(ExceptionHandler::class, CustomExceptionHandler::class);
@@ -37,6 +38,12 @@ class PreOrderServiceProvider extends ServiceProvider
         $this->mergeConfigFrom(self::basePath("/config/{$this->name}.php"), $this->name);
     }
 
+    protected function registerMiddleware(): void
+    {
+        $this->app['router']->aliasMiddleware('custom-auth', CustomAuthMiddleware::class);
+        $this->app['router']->aliasMiddleware('custom-guest', CustomGuestMiddleware::class);
+        $this->app['router']->aliasMiddleware('is-admin', IsAdminMiddleware::class);
+    }
     public function boot(): void
     {
         if ($this->app->runningInConsole()) {
@@ -99,26 +106,6 @@ class PreOrderServiceProvider extends ServiceProvider
         ], function () {
             $this->loadRoutesFrom(self::basePath('/routes/web.php'));
         });
-    }
-
-    protected function defineDefaultGates()
-    {
-        if (! Gate::has('downloadLogFile')) {
-            Gate::define('downloadLogFile', function ($user, LogFile $file) {
-                return $user->role === 'admin'; // Allow only admins to download
-            });        }
-
-        if (! Gate::has('downloadLogFolder')) {
-            Gate::define('downloadLogFolder', fn (mixed $user, LogFolder $folder) => true);
-        }
-
-        if (! Gate::has('deleteLogFile')) {
-            Gate::define('deleteLogFile', fn (mixed $user, LogFile $file) => true);
-        }
-
-        if (! Gate::has('deleteLogFolder')) {
-            Gate::define('deleteLogFolder', fn (mixed $user, LogFolder $folder) => true);
-        }
     }
     protected function registerResources(): void
     {

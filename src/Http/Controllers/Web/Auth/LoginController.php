@@ -11,7 +11,7 @@ class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request)
     {
-        $user = User::query()->where('email', $request->email)->first();
+        $user = User::query()->where('email', $request->email)->with('roles:id,name')->first();
         if ($user && Hash::check($request->password, $user->password)) {
             session(['auth_user' => $user]);
 
