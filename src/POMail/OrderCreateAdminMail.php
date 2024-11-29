@@ -3,12 +3,11 @@
 namespace PreOrder\PreOrderBackend\POMail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Queue\SerializesModels;
 use PreOrder\PreOrderBackend\Models\PreOrder;
 
-class OrderCreateAdminMail extends Mailable implements ShouldQueue
+class OrderCreateAdminMail extends Mailable
 {
     use Queueable, SerializesModels;
 

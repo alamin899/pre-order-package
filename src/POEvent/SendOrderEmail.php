@@ -2,13 +2,16 @@
 
 namespace PreOrder\PreOrderBackend\POEvent;
 
+use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Events\Dispatchable;
+use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use PreOrder\PreOrderBackend\Models\PreOrder;
 
-class SendOrderEmail
+class SendOrderEmail implements ShouldQueue
 {
-    use SerializesModels,Dispatchable;
+    use Dispatchable, SerializesModels, Queueable,InteractsWithQueue;
 
     public $order;
 
