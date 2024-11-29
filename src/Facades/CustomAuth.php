@@ -1,6 +1,6 @@
 <?php
 
-namespace PreOrder\PreOrderBackend\Facade;
+namespace PreOrder\PreOrderBackend\Facades;
 
 use Illuminate\Support\Facades\Facade;
 

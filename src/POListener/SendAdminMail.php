@@ -1,11 +1,11 @@
 <?php
 
-namespace PreOrder\PreOrderBackend\Listener;
+namespace PreOrder\PreOrderBackend\POListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
-use PreOrder\PreOrderBackend\Events\SendOrderEmail;
-use PreOrder\PreOrderBackend\Mail\OrderCreateAdminMail;
+use PreOrder\PreOrderBackend\POEvent\SendOrderEmail;
+use PreOrder\PreOrderBackend\POMail\OrderCreateAdminMail;
 use PreOrder\PreOrderBackend\Models\User;
 
 class SendAdminMail implements ShouldQueue

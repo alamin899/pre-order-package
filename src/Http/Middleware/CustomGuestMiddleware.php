@@ -4,7 +4,7 @@ namespace PreOrder\PreOrderBackend\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use PreOrder\PreOrderBackend\Facade\CustomAuth;
+use PreOrder\PreOrderBackend\Facades\CustomAuth;
 
 class CustomGuestMiddleware
 {

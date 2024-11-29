@@ -1,6 +1,6 @@
 <?php
 
-namespace PreOrder\PreOrderBackend\Events;
+namespace PreOrder\PreOrderBackend\POEvent;
 
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Queue\SerializesModels;

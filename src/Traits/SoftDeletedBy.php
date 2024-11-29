@@ -3,7 +3,7 @@
 namespace PreOrder\PreOrderBackend\Traits;
 
 use Illuminate\Database\Eloquent\Model;
-use PreOrder\PreOrderBackend\Facade\CustomAuth;
+use PreOrder\PreOrderBackend\Facades\CustomAuth;
 
 trait SoftDeletedBy
 {

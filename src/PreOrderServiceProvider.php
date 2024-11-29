@@ -10,14 +10,14 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Str;
 use PreOrder\Database\Seeders\ProductSeeder;
 use PreOrder\Database\Seeders\UserRoleSeeder;
-use PreOrder\PreOrderBackend\Events\SendOrderEmail;
 use PreOrder\PreOrderBackend\Exceptions\CustomExceptionHandler;
-use PreOrder\PreOrderBackend\Facade\services\CustomAuthService;
+use PreOrder\PreOrderBackend\Facades\Services\AuthService;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomAuthMiddleware;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomGuestMiddleware;
 use PreOrder\PreOrderBackend\Http\Middleware\IsAdminMiddleware;
-use PreOrder\PreOrderBackend\Listener\SendAdminMail;
 use PreOrder\PreOrderBackend\Listener\SendCustomerMail;
+use PreOrder\PreOrderBackend\POEvent\SendOrderEmail;
+use PreOrder\PreOrderBackend\POListener\SendAdminMail;
 
 class PreOrderServiceProvider extends ServiceProvider
 {
@@ -35,7 +35,7 @@ class PreOrderServiceProvider extends ServiceProvider
 
         $this->app->singleton(ExceptionHandler::class, CustomExceptionHandler::class);
         $this->app->singleton('customauth', function ($app) {
-            return new CustomAuthService();
+            return new AuthService();
         });
         $this->mergeConfigFrom(self::basePath("/config/{$this->name}.php"), $this->name);
     }

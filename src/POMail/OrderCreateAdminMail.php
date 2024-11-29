@@ -1,6 +1,6 @@
 <?php
 
-namespace PreOrder\PreOrderBackend\Mail;
+namespace PreOrder\PreOrderBackend\POMail;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Foundation\Queue\Queueable;

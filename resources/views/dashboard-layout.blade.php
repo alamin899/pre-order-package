@@ -18,6 +18,7 @@
             background-color: #f8f9fa;
             padding-top: 20px;
         }
+
         .sidebar a {
             display: block;
             padding: 10px;
@@ -25,10 +26,12 @@
             color: #333;
             margin-bottom: 5px;
         }
+
         .sidebar a:hover {
             background-color: #007bff;
             color: white;
         }
+
         .main-content {
             margin-left: 250px;
             padding: 20px;
@@ -41,7 +44,8 @@
     <h3 class="text-center">Dashboard</h3>
     <a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Home</a>
     <a href="{{ route('dashboard.products') }}" class="{{ request()->routeIs('dashboard.products') ? 'active' : '' }}">Products</a>
-    <a href="{{ route('dashboard.preorders') }}" class="{{ request()->routeIs('dashboard.preorders') ? 'active' : '' }}">Preorders</a>
+    <a href="{{ route('dashboard.preorders') }}"
+       class="{{ request()->routeIs('dashboard.preorders') ? 'active' : '' }}">Preorders</a>
     <a href="#" id="logout-link" class="{{ request()->routeIs('auth.logout') ? 'active' : '' }}">Logout</a>
 
     <form id="logout-form" action="{{ route('auth.logout') }}" method="POST" style="display: none;">
@@ -54,7 +58,7 @@
     <!-- Header -->
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h2>@yield('page-title', 'Dashboard')</h2>
-        <span>Welcome,  {{\PreOrder\PreOrderBackend\Facade\CustomAuth::user()->name}}</span>
+        <span>Welcome,  {{\PreOrder\PreOrderBackend\Facades\CustomAuth::user()->name}}</span>
     </div>
     <div>
         @if (session('success'))
