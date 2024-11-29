@@ -2,6 +2,7 @@
 
 namespace PreOrder\PreOrderBackend\POListener;
 
+use Illuminate\Bus\Queueable;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 use PreOrder\PreOrderBackend\POEvent\SendOrderEmail;
@@ -10,6 +11,7 @@ use PreOrder\PreOrderBackend\Models\User;
 
 class SendAdminMail implements ShouldQueue
 {
+    use Queueable;
     public function handle(SendOrderEmail $event): void
     {
         $admin = User::query()
