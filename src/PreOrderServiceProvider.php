@@ -15,9 +15,9 @@ use PreOrder\PreOrderBackend\Facades\Services\AuthService;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomAuthMiddleware;
 use PreOrder\PreOrderBackend\Http\Middleware\CustomGuestMiddleware;
 use PreOrder\PreOrderBackend\Http\Middleware\IsAdminMiddleware;
-use PreOrder\PreOrderBackend\Listener\SendCustomerMail;
 use PreOrder\PreOrderBackend\POEvent\SendOrderEmail;
 use PreOrder\PreOrderBackend\POListener\SendAdminMail;
+use PreOrder\PreOrderBackend\POListener\SendCustomerMail;
 
 class PreOrderServiceProvider extends ServiceProvider
 {

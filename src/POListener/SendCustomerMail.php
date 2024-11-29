@@ -1,11 +1,11 @@
 <?php
 
-namespace PreOrder\PreOrderBackend\Listener;
+namespace PreOrder\PreOrderBackend\POListener;
 
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
-use PreOrder\PreOrderBackend\Events\SendOrderEmail;
-use PreOrder\PreOrderBackend\Mail\OrderCreateCustomerMail;
+use PreOrder\PreOrderBackend\POEvent\SendOrderEmail;
+use PreOrder\PreOrderBackend\POMail\OrderCreateCustomerMail;
 
 class SendCustomerMail implements ShouldQueue
 {
@@ -13,5 +13,4 @@ class SendCustomerMail implements ShouldQueue
     {
         Mail::to($event->order->customer_email)->send(new OrderCreateCustomerMail($event->order));
     }
-
 }
