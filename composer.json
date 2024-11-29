@@ -13,8 +13,7 @@
         }
     ],
     "require": {
-        "php": "^8.0",
-        "laravel/framework": "^10.10"
+        "php": "^8.0"
     },
 
     "autoload": {
