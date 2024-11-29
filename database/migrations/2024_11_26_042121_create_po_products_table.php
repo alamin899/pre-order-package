@@ -18,7 +18,7 @@ return new class() extends Migration
             $table->string('name')->nullable();
             $table->string('slug')->unique()->nullable();
             $table->text('description')->nullable();
-            $table->float('price')->unique()->nullable();
+            $table->float('price')->nullable();
             $table->boolean('status')->default(true);
             $table->softDeletes();
             $table->bigInteger('deleted_by_id')->nullable();
