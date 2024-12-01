@@ -27,7 +27,7 @@ class PreOrderRequest extends FormRequest
 
         $recaptcha = config('setting.google');
         if (!$recaptcha['bypass_captcha']) {
-            $rules['gRecaptchaToken'] = ['required', 'min:5', 'max:1000', new GoogleReCaptchaRule()];
+            $rules['gRecaptchaToken'] = ['required', new GoogleReCaptchaRule()];
         }
         if ($this->filled('customer_email') && str_ends_with($this->input('customer_email'), '@xyz.com')) {
             $rules['customer_phone'] = ['required', 'max:16', 'min:11', 'regex:/^(\+88|88|0088|\+0088)?(01[3-9]\d{8})$/'];
