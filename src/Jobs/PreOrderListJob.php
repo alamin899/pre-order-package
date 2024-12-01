@@ -10,8 +10,8 @@ class PreOrderListJob
     public function __construct(
         private  ?string $query = '',
         private  int     $perPage = 15,
-        private  string     $column = 'id',
-        private  string     $orderBy = 'desc',
+        private  ?string     $column = 'id',
+        private  ?string     $orderBy = 'desc',
     )
     {
     }
