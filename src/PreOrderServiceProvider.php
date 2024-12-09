@@ -56,6 +56,9 @@ class PreOrderServiceProvider extends ServiceProvider
             $this->publishes([
                 self::basePath('/resources/views') => resource_path("views/vendor/{$this->name}"),
             ], "{$this->name}-views");
+            $this->publishes([
+                __DIR__ . '/../resources/js' => resource_path('js/vendor/pre-order'),
+            ], 'pre-order-assets');
         }
 
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
